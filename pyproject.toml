@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python_template"
+version = "0.0.1"
+authors = [{name="Brenden Pelkie", email="bgpelkie@gmail.com"}]
+description = "Somebody forgot to update the template"
+requires-python = ">3.7"
