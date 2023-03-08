@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "python_template"
+name = "bayesopt"
 version = "0.0.1"
 authors = [{name="Brenden Pelkie", email="bgpelkie@gmail.com"}]
-description = "Somebody forgot to update the template"
+description = "Bayesian Optimization for Design of Experiments course"
 requires-python = ">3.7"
