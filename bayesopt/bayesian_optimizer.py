@@ -66,16 +66,13 @@ class BayesianOptimizer:
             #1. Train model on current set of data
             print('Updating model')
             self.model.update(self.all_data)
-            #2. get set of available points to sample from
-            print('Getting possible points')
-            possible_points = self.enumerate_points()
-            #3. Evaluate acquisition function
+            #2. Evaluate acquisition function
             print('Calling acquisition function')
             querypts = self.acquisition_func(self)
-            #4. query oracle
+            #3. query oracle
             print('Asking the oracle')
             oracle_results = self.oracle.predict(querypts)
-            #5. update data with new result
+            #4. update data with new result
             self.all_data = self.update_data(self.all_data, querypts, oracle_results)
             try:
                 self.oracle_data = self.update_data(self.oracle_data, querypts, oracle_results)
@@ -84,7 +81,7 @@ class BayesianOptimizer:
 
             results = {'querypts':querypts, 'oracleresult':oracle_results}
             results_dict[str(i)] = results
-            #6. update the set of available points
+            #5. update the set of available points
 
             self.update_available_points()
 
