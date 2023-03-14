@@ -45,7 +45,7 @@ def optimize_UCB(bo, n_querypts = 1, beta = 1):
     pred_X, std_X = bo.model.evaluate(bo.available_points)
     UCB = _UCB(pred_X, std_X, beta)
     query_ind = np.argsort(UCB)
-    if bo.method == 'min':
+    if bo.method == 'max':
         query_ind = np.flip(query_ind)
     querypts = bo.available_points[query_ind[:n_querypts],:]
 
@@ -72,7 +72,7 @@ def optimize_EI(bo, n_querypts = 1, xi = 1):
     max_val = y.max()
     EI = _expected_improvement(pred_X, std_X, max_val, xi)
     query_ind = np.argsort(EI)
-    if bo.method == 'min':
+    if bo.method == 'max':
         query_ind = np.flip(query_ind)
     querypts = bo.available_points[query_ind[:n_querypts],:]
     return querypts
@@ -95,11 +95,11 @@ def optimize_PI(bo, n_querypts = 1, xi = 1):
     querypoints: list of points to query at
     """
     X, y = bo.all_data
-    pred_X, std_X = bo.model.evaluate(bo.available_points)
+    pred_y, std_y = bo.model.evaluate(bo.available_points)
     max_val = y.max()
-    PI = _probability_of_improvement(pred_X, std_X, max_val, xi)
+    PI = _probability_of_improvement(pred_y, std_y, max_val, xi)
     query_ind = np.argsort(PI)
-    if bo.method == 'min':
+    if bo.method == 'max':
         query_ind = np.flip(query_ind)
     querypts = bo.available_points[query_ind[:n_querypts],:]
     return querypts

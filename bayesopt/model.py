@@ -23,7 +23,7 @@ class Model():
     
 
 class GaussianProcessModel(Model):
-    def __init__(self, kernel, scale = True):
+    def __init__(self, kernel, alpha = 1e-10, scale = True):
         """
         Use a gaussian process regressor as the BO model
 
@@ -37,7 +37,7 @@ class GaussianProcessModel(Model):
             pipeline_steps.append(('scaler', MinMaxScaler()))
         else:
             pass
-        estimator = gp.GaussianProcessRegressor(kernel = kernel)
+        estimator = gp.GaussianProcessRegressor(kernel = kernel, alpha = alpha, n_restarts_optimizer = 10)
         pipeline_steps.append(('estimator', estimator))
 
         self.pipeline = Pipeline(pipeline_steps)
