@@ -1,2 +1,3 @@
 # python_project_template
-Repo structure for python projects
+Bayesian Optimization 
+For Design of Experiments, W23, CHEME 599
