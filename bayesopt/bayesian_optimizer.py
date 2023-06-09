@@ -42,7 +42,7 @@ class BayesianOptimizer:
 
     def optimization_campaign(self, n_iterations, metrics = None):
         """
-        run a Bayesian Optimization campaign
+        run a Bayesian Optimization campaign. This assumes a toy in-silico oracle that is called directly here. See campaign_iteration for more realistic implementation for real world stuff
 
         Paramters:
         ----------
@@ -91,7 +91,19 @@ class BayesianOptimizer:
             
 
         return results_dict
+    
+    def campaign_iteration(self, new_X, new_y, batch_size):
+        """
+        This method takes new data, updates the model, and makes new acquisition choices
+        """
+        self.all_data = self.update_data(self.all_data, new_X, new_y)
+        self.update_available_points()
 
+        self.model.update(self.all_data)
+
+        querypts = self.acquisition_func(self, **self.acq_kwargs)
+
+        return querypts
 
     def update_data(self, old_data, new_X, new_y):
         """
