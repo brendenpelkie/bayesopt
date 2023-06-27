@@ -27,9 +27,10 @@ class BayesianOptimizer:
         assert len(starter_data[0]) == len(starter_data[1]), 'X and y have different dimensions'
         #assert valid_points.shape[1] == starter_data[0].shape[1], 'Valid points have a different dimensionality than X'
 
+
         self.original_data = starter_data
         self.oracle_data = None
-        self.all_data = None
+        self.all_data = starter_data
         self.oracle = oracle
         self.acquisition_func = acquisition_function
         self.model = model
@@ -38,6 +39,8 @@ class BayesianOptimizer:
         self.available_points = valid_points
         self.method = method
         self.acq_kwargs = acq_kwargs
+
+        self.update_available_points()
 
 
     def optimization_campaign(self, n_iterations, metrics = None):
@@ -92,11 +95,15 @@ class BayesianOptimizer:
 
         return results_dict
     
-    def campaign_iteration(self, new_X, new_y, batch_size):
+    def campaign_iteration(self, new_X, new_y, batch_size = 1):
         """
         This method takes new data, updates the model, and makes new acquisition choices
         """
-        self.all_data = self.update_data(self.all_data, new_X, new_y)
+        if new_X is not None:
+            new_X = np.reshape(new_X, (1,-1))
+            new_y = np.reshape(new_y, 1)
+            self.all_data = self.update_data(self.all_data, new_X, new_y)
+
         self.update_available_points()
 
         self.model.update(self.all_data)
@@ -135,6 +142,7 @@ class BayesianOptimizer:
         points = self.available_points
         existing_inds = []
         X, y = self.all_data
+        #print(X)
         for i in range(X.shape[0]):
             loc = np.where((X[i,:] == points).all(axis = 1))[0]
             if len(loc) == 1:
